@@ -1,0 +1,15 @@
+---
+
+- name: Validate rsyslog config
+  ansible.builtin.command: rsyslogd -N1
+  notify: restart rsyslog
+
+- name: Reload haproxy
+  ansible.builtin.service:
+    name: haproxy
+    state: reloaded
+
+- name: Restart rsyslog
+  ansible.builtin.service:
+    name: rsyslog
+    state: restarted

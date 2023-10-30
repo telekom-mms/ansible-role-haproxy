@@ -1,0 +1,76 @@
+---
+
+- name: Fetch OS dependent variables
+  ansible.builtin.include_vars:
+    file: "{{ ansible_facts.os_family }}.yml"
+
+- name: Create folder for HAProxy error pages
+  when:
+    - haproxy_maintenance_pages_file_path is defined
+    - haproxy_maintenance_pages_file_path | length > 0
+  ansible.builtin.file:
+    path: /etc/haproxy/errors
+    state: directory
+    owner: root
+    group: root
+    mode: "0750"
+  notify: Reload haproxy
+
+- name: Create HAProxy maintenance pages
+  when:
+    - haproxy_maintenance_pages_file_path is defined
+    - haproxy_maintenance_pages_file_path | length > 0
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "/etc/haproxy/errors/"
+    mode: "0644"
+    owner: root
+    group: root
+  with_fileglob:
+    - "{{ haproxy_maintenance_pages_file_path }}/*"
+  notify: Reload haproxy
+
+- name: Create HAProxy config at server
+  no_log: haproxy_configuration_no_log | bool
+  ansible.builtin.template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+    owner: root
+    group: root
+    mode: "0644"
+    validate: haproxy -c -V -f %s
+  notify: Reload haproxy
+
+- name: HAProxy logging - rsyslog - uncomment ModLoad to load UDP Module
+  ansible.builtin.replace:
+    path: /etc/rsyslog.conf
+    regexp: "{{ haproxy_rsyslog_module_regex }}"
+    replace: '\1'
+  notify: Validate rsyslog config
+
+- name: HAProxy logging - rsyslog - uncomment UDPServerRun to listen on all IPs for UDP traffic on port 514
+  ansible.builtin.replace:
+    path: /etc/rsyslog.conf
+    regexp: "{{ haproxy_rsyslog_udp_server_regex }}"
+    replace: '\1'
+  notify: Validate rsyslog config
+
+- name: HAProxy logging - rsyslog - copy HAProxy config
+  ansible.builtin.template:
+    src: rsyslog_haproxy.conf.j2
+    dest: "{{ haproxy_rsyslog_configuration_file }}"
+    mode: "0644"
+    validate: rsyslogd -N1 -f %s
+  notify: Restart rsyslog
+
+- name: Start and enable HAProxy
+  ansible.builtin.service:
+    name: haproxy
+    enabled: true
+    state: started
+
+- name: Start and enable rsyslog
+  ansible.builtin.service:
+    name: rsyslog
+    enabled: true
+    state: started

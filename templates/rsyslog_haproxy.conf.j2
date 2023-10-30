@@ -1,0 +1,15 @@
+{% if ansible_os_family == 'RedHat'%}
+# create separate logfile for haproxy
+if $programname startswith 'haproxy' then /var/log/haproxy.log
+& stop # discard any additional messages that matched the previously matched rule up to this point
+{% elif ansible_os_family == 'Debian'%}
+# Create an additional socket in haproxy's chroot in order to allow logging via
+# /dev/log to chroot'ed HAProxy processes
+$AddUnixListenSocket /var/lib/haproxy/dev/log
+
+# Send HAProxy messages to a dedicated logfile
+:programname, startswith, "haproxy" {
+  /var/log/haproxy.log
+  stop
+}
+{% endif %}

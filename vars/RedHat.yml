@@ -1,0 +1,4 @@
+---
+haproxy_rsyslog_configuration_file: /etc/rsyslog.d/haproxy.conf
+haproxy_rsyslog_module_regex: '^#(\$ModLoad imudp)'
+haproxy_rsyslog_udp_server_regex: '^#(\$UDPServerRun 514)'

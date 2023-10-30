@@ -1,0 +1,31 @@
+---
+# Set backend state of backend servers
+- name: "Manage backend servers: {{ haproxy_distribution_lb_backend_state }}"
+  delegate_to: "{{ item }}"
+  community.general.haproxy:
+    state: "{{ haproxy_distribution_lb_backend_state }}"
+    host: '{{ inventory_hostname }}'
+    socket: "{{ haproxy_global_stats_socket }}"
+    backend: "{{ haproxy_distribution_lb_backend }}"
+    fail_on_not_found: "{{ haproxy_distribution_lb_backend_fail_on_not_found | default(false) }}"
+  loop: "{{ groups[haproxy_distribution_lb_inventory_group] }}"
+
+# wait until connections to backend server are drained
+- name: Wait for drain of connections to backend servers
+  when:
+    - haproxy_distribution_lb_backend_state is search("drain")
+  ansible.builtin.pause:
+    seconds: "{{ haproxy_distribution_lb_backend_drain_wait }}"
+
+# disable nodes when drain was issued to end all remaining connections
+- name: Set backend servers to maintenance mode
+  delegate_to: "{{ item }}"
+  when:
+    - haproxy_distribution_lb_backend_state is search("drain")
+  community.general.haproxy:
+    state: "disabled"
+    host: '{{ inventory_hostname }}'
+    socket: "{{ haproxy_global_stats_socket }}"
+    backend: "{{ haproxy_distribution_lb_backend }}"
+    fail_on_not_found: "{{ haproxy_distribution_lb_backend_fail_on_not_found | default(false) }}"
+  loop: "{{ groups[haproxy_distribution_lb_inventory_group] }}"

@@ -1,0 +1,119 @@
+# This file is managed by Ansible
+global
+  chroot {{ haproxy_global_chroot }}
+  user {{ haproxy_global_user }}
+  group {{ haproxy_global_group }}
+  daemon
+  log {{ ansible_default_ipv4.address }} local0
+{% if haproxy_global_stats_socket_level is defined %}
+  stats socket {{ haproxy_global_stats_socket }} level {{ haproxy_global_stats_socket_level }}
+{% else %}
+  stats socket {{ haproxy_global_stats_socket }}
+{%endif%}
+  pidfile /var/run/haproxy.pid
+{% if haproxy_global_vars is defined %}
+{% for global_var in haproxy_global_vars %}
+  {{ global_var }}
+{% endfor %}
+{% endif %}
+
+defaults
+  log global
+  option redispatch
+  stats {{ haproxy_default_stats }}
+  timeout queue {{ haproxy_default_timeout_queue }}
+  timeout connect {{ haproxy_default_timeout_connect }}
+  timeout client {{ haproxy_default_timeout_client }}
+  timeout server {{ haproxy_default_timeout_server }}
+  timeout check {{ haproxy_default_timeout_check }}
+{% if haproxy_default_vars is defined %}
+{% for default_var in haproxy_default_vars %}
+  {{ default_var }}
+{% endfor %}
+{% endif %}
+
+{% for userlist in  haproxy_user_list %}
+userlist {{ userlist.name }}
+{% for user in userlist.users %}
+  user {{ user.name }} password {{ user.pwhash }}
+{% endfor %}
+{% endfor %}
+
+{% if haproxy_custom_config is defined %}
+{{ haproxy_custom_config }}
+{% endif %}
+
+{% for frontend in haproxy_frontends %}
+{% if frontend.comments is defined %}
+{% for comment in frontend.comments %}
+{{ comment }}
+{% endfor %}
+{% endif %}
+frontend {{ frontend.name }}
+{% for bind in frontend.binds %}
+{% if bind.param is defined %}
+  bind {{ bind.address }}:{{ bind.port }} {{ bind.param }}
+{% else %}
+  bind {{ bind.address }}:{{ bind.port }}
+{% endif %}
+{% endfor %}
+  mode {{ frontend.mode }}
+  default_backend {{ frontend.default_backend }}
+{% if frontend.aclist is defined %}
+{% for acl in frontend.aclist %}
+{% for var in acl.vars %}
+  acl {{ acl.name }} {{ acl.match }} {{ var }}
+{% endfor %}
+{% if acl.use_backend is defined %}
+{% for backend in acl.use_backend %}
+  use_backend {{ backend.name }} {{ backend.operation|default("if") }} {{ backend.check_acl|join(" ") }}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}
+{% if frontend.options is defined %}
+{% for option in frontend.options %}
+  option {{ option }}
+{% endfor %}
+{% endif %}
+{% if frontend.vars is defined %}
+{% for var in frontend.vars %}
+  {{ var }}
+{% endfor %}
+{% endif %}
+
+{% endfor %}
+
+{% for backend in haproxy_backends %}
+{% if backend.comments is defined %}
+{% for comment in backend.comments %}
+{{ comment }}
+{% endfor %}
+{% endif %}
+backend {{ backend.name }}
+  balance {{ backend.balance_method|default("roundrobin") }}
+  mode {{ backend.mode }}
+{% if backend.options is defined %}
+{% for option in backend.options %}
+  option {{ option }}
+{% endfor %}
+{% endif %}
+{% if backend.aclist is defined %}
+{% for acl in backend.aclist %}
+{% for var in acl.vars %}
+  acl {{ acl.name }} {{ acl.match }} {{ var }}
+{% endfor %}
+{% endfor %}
+{% endif %}
+{% if backend.vars is defined %}
+{% for var in backend.vars %}
+  {{ var }}
+{% endfor %}
+{% endif %}
+{% if backend.servers is defined %}
+{% for server in backend.servers %}
+  server {{ server.name }} {{ server.address }}:{{ server.port }} {{ server.options|default("") }}
+{% endfor %}
+{% endif %}
+
+{% endfor %}
