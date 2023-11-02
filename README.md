@@ -29,7 +29,7 @@ This role installs and configures HAProxy on hosts and also allows changing the 
 | &ensp;name        | yes | | Name of the userlist
 | &ensp;users       | yes | | List of users
 | &ensp;name        | yes | | Name of the user
-| &ensp;pwhash      | yes | | Hashed password from according user. [See here for how to create a hash.](https://www.haproxy.com/documentation/haproxy-configuration-tutorials/authentication/basic-authentication/#hash-passwords-in-the-userlist)
+| &ensp;pwhash      | yes | | Hashed password from according user. [Click here to see how to create a hash.](https://www.haproxy.com/documentation/haproxy-configuration-tutorials/authentication/basic-authentication/#hash-passwords-in-the-userlist)
 | **haproxy custom configuration**
 | haproxy_custom_config | no | | Custom haproxy configuration
 | **frontend configuration**

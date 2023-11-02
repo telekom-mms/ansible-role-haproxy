@@ -31,7 +31,7 @@
   notify: Reload haproxy
 
 - name: Create HAProxy config at server
-  no_log: haproxy_configuration_no_log | bool
+  no_log: "{{ haproxy_configuration_no_log | bool }}"
   ansible.builtin.template:
     src: haproxy.cfg.j2
     dest: /etc/haproxy/haproxy.cfg
