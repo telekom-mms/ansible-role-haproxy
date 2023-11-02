@@ -1,0 +1,11 @@
+---
+galaxy_info:
+  role_name: haproxy
+  author: telekom_mms
+  description: Install and configure HAProxy on different operation systems
+  license: GPLv3
+  min_ansible_version: "2.9"
+  galaxy_tags: [haproxy]
+  platforms:
+    - { name: EL, versions: [all] }
+    - { name: Debian, versions: [all] }
