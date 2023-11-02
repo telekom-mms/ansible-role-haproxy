@@ -1,4 +1,4 @@
-# ansible-haproxy
+# ansible-role-haproxy
 
 This role installs and configures HAProxy on hosts and also allows changing the distribution of backend servers of HAProxy backends.
 
@@ -158,3 +158,14 @@ haproxy_backends:
       - "# backend for service xy"
 haproxy_maintenance_pages_file_path: "{{ playbook_dir }}/../files/haproxy"
 ```
+
+
+## License
+
+GPLv3
+
+## Author Information
+
+* Andreas Hering
+* Daniel Uhlmann
+* Christopher Grau
