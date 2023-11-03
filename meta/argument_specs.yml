@@ -1,0 +1,168 @@
+---
+argument_specs:
+  main:
+    short_description: The main entry point for the haproxy role.
+    version_added: 1.0.0
+    options:
+      haproxy_global_stats_socket:
+        default: /var/lib/haproxy/stats
+        type: str
+        description: Set socket path
+      haproxy_global_chroot:
+        default: /var/lib/haproxy
+        type: str
+        description: Changes current directory to  specified value and performs a
+          chroot() there before dropping privilege
+      haproxy_global_user:
+        default: haproxy
+        type: str
+        description: HaProxy User
+      haproxy_global_group:
+        default: haproxy
+        type: str
+        description: HaProxy Group
+      haproxy_global_vars:
+        default: []
+        type: list
+        description: List of variables for global configuration part of HAProxy
+      haproxy_default_stats:
+        default: enable
+        type: str
+        description: Enable or disable stats
+      haproxy_default_timeout_queue:
+        default: 1m
+        type: str
+        description: Set the maximum time to wait in the queue for a connection slot
+          to be free
+      haproxy_default_timeout_connect:
+        default: 10s
+        type: str
+        description: Set the maximum time to wait for a connection attempt to a server
+          to succeed.
+      haproxy_default_timeout_client:
+        default: 1m
+        type: str
+        description: Set the maximum inactivity time on the client side.
+      haproxy_default_timeout_server:
+        default: 1m
+        type: str
+        description: Set the maximum inactivity time on the server side.
+      haproxy_default_timeout_check:
+        default: 10s
+        type: str
+        description: Set additional check timeout, but only after a connection has
+          been already established.
+      haproxy_default_vars:
+        default: []
+        type: list
+        description: List of variables for default configuration part of HAProxy
+      haproxy_user_list:
+        default: []
+        type: list
+        description: List of userlists
+      haproxy_frontends:
+        type: list
+        description: List of frontends
+        default:
+          - name:
+            default: myHttpFrontend
+            type: str
+            description: ''
+            binds:
+              default:
+              type: str
+              description: ''
+              address:
+                default: 127.0.0.1
+                type: str
+                description: ''
+              port:
+                default: 80
+                type: str
+                description: ''
+            mode:
+              default: http
+              type: str
+              description: ''
+            default_backend:
+              default: myHttpBackend
+              type: str
+              description: ''
+            client_timeout:
+              default: 30s
+              type: str
+              description: ''
+            options:
+              - httplog
+      haproxy_frontend_vars:
+        default: []
+        type: list
+        description: List of frontend variables
+
+      haproxy_backends:
+        type: list
+        description: List of backends
+        default:
+          - name:
+            default: myHttpBackend
+            type: str
+            description: ''
+            connect_timeout:
+              default: 10s
+              type: str
+              description: ''
+            server_timeout:
+              default: 1m
+              type: str
+              description: ''
+            mode:
+              default: http
+              type: str
+              description: ''
+            servers:
+              - name:
+                default: my-server-1
+                type: str
+                description: ''
+                address:
+                  default: 192.168.0.3
+                  type: str
+                  description: ''
+                port:
+                  default: 80
+                  type: str
+                  description: ''
+              - name:
+                default: my-server-2
+                type: str
+                description: ''
+                address:
+                  default: 192.168.0.3
+                  type: str
+                  description: ''
+                port:
+                  default: 80
+                  type: str
+                  description: ''
+            options:
+              - httplog
+              - http-check
+      haproxy_backend_vars:
+        default: []
+        type: list
+        description: List of backend variables
+
+      haproxy_distribution_lb_change:
+        default: false
+        type: bool
+        description: Adjust distribution of HAProxy backend servers.
+      haproxy_distribution_lb_backend_drain_wait:
+        default: 60
+        type: int
+        description: Seconds to wait for drain of connections before changing state
+          to MAINT|disabled
+
+      haproxy_configuration_no_log:
+        default: true
+        type: bool
+        description: Do not show rendered template output on creation
