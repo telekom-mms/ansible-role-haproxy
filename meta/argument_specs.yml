@@ -16,7 +16,7 @@ argument_specs:
       haproxy_global_user:
         default: haproxy
         type: str
-        description: HaProxy User
+        description: HAProxy User
       haproxy_global_group:
         default: haproxy
         type: str
