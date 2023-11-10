@@ -62,38 +62,10 @@ argument_specs:
         description: List of userlists
       haproxy_frontends:
         type: list
+        elements: dict
         description: List of frontends
-        default:
-          - name:
-            default: myHttpFrontend
-            type: str
-            description: ''
-            binds:
-              default:
-              type: str
-              description: ''
-              address:
-                default: 127.0.0.1
-                type: str
-                description: ''
-              port:
-                default: 80
-                type: str
-                description: ''
-            mode:
-              default: http
-              type: str
-              description: ''
-            default_backend:
-              default: myHttpBackend
-              type: str
-              description: ''
-            client_timeout:
-              default: 30s
-              type: str
-              description: ''
-            options:
-              - httplog
+        default: []
+
       haproxy_frontend_vars:
         default: []
         type: list
@@ -101,52 +73,10 @@ argument_specs:
 
       haproxy_backends:
         type: list
+        elements: dict
         description: List of backends
-        default:
-          - name:
-            default: myHttpBackend
-            type: str
-            description: ''
-            connect_timeout:
-              default: 10s
-              type: str
-              description: ''
-            server_timeout:
-              default: 1m
-              type: str
-              description: ''
-            mode:
-              default: http
-              type: str
-              description: ''
-            servers:
-              - name:
-                default: my-server-1
-                type: str
-                description: ''
-                address:
-                  default: 192.168.0.3
-                  type: str
-                  description: ''
-                port:
-                  default: 80
-                  type: str
-                  description: ''
-              - name:
-                default: my-server-2
-                type: str
-                description: ''
-                address:
-                  default: 192.168.0.3
-                  type: str
-                  description: ''
-                port:
-                  default: 80
-                  type: str
-                  description: ''
-            options:
-              - httplog
-              - http-check
+        default: []
+
       haproxy_backend_vars:
         default: []
         type: list

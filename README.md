@@ -18,9 +18,9 @@ This role installs and configures HAProxy on hosts and also allows changing the 
   - Type: list
   - Required: no
 - `haproxy_backends`
-  - Default: `[{"name": null, "default": "myHttpBackend", "type": "str", "description": "", "connect_timeout": {"default": "10s", "type": "str", "description": ""}, "server_timeout": {"default": "1m", "type": "str", "description": ""}, "mode": {"default": "http", "type": "str", "description": ""}, "servers": [{"name": null, "default": "my-server-1", "type": "str", "description": "", "address": {"default": "192.168.0.3", "type": "str", "description": ""}, "port": {"default": 80, "type": "str", "description": ""}}, {"name": null, "default": "my-server-2", "type": "str", "description": "", "address": {"default": "192.168.0.3", "type": "str", "description": ""}, "port": {"default": 80, "type": "str", "description": ""}}], "options": ["httplog", "http-check"]}]`
+  - Default: ``
   - Description: List of backends
-  - Type: list
+  - Type: list of 'dict'
   - Required: no
 - `haproxy_configuration_no_log`
   - Default: `true`
@@ -78,9 +78,9 @@ This role installs and configures HAProxy on hosts and also allows changing the 
   - Type: list
   - Required: no
 - `haproxy_frontends`
-  - Default: `[{"name": null, "default": "myHttpFrontend", "type": "str", "description": "", "binds": {"default": null, "type": "str", "description": "", "address": {"default": "127.0.0.1", "type": "str", "description": ""}, "port": {"default": 80, "type": "str", "description": ""}}, "mode": {"default": "http", "type": "str", "description": ""}, "default_backend": {"default": "myHttpBackend", "type": "str", "description": ""}, "client_timeout": {"default": "30s", "type": "str", "description": ""}, "options": ["httplog"]}]`
+  - Default: ``
   - Description: List of frontends
-  - Type: list
+  - Type: list of 'dict'
   - Required: no
 - `haproxy_global_chroot`
   - Default: `/var/lib/haproxy`

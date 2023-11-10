@@ -15,33 +15,10 @@ haproxy_default_vars: []
 
 haproxy_user_list: []
 
-haproxy_frontends:
-  - name: myHttpFrontend
-    binds:
-      address: 127.0.0.1
-      port: 80
-    mode: http
-    default_backend: myHttpBackend
-    client_timeout: 30s
-    options:
-      - httplog
+haproxy_frontends: []
 haproxy_frontend_vars: []
 
-haproxy_backends:
-  - name: myHttpBackend
-    connect_timeout: 10s
-    server_timeout: 1m
-    mode: http
-    servers:
-      - name: "my-server-1"
-        address: "192.168.0.3"
-        port: 80
-      - name: "my-server-2"
-        address: "192.168.0.3"
-        port: 80
-    options:
-      - httplog
-      - http-check
+haproxy_backends: []
 haproxy_backend_vars: []
 
 haproxy_distribution_lb_change: false
