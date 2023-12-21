@@ -2,7 +2,7 @@
 galaxy_info:
   role_name: haproxy
   author: telekom_mms
-  description: Install and configure HAProxy on different operation systems
+  description: This role installs and configures HAProxy on hosts and also allows changing the distribution of backend servers of HAProxy backends.
   license: GPLv3
   min_ansible_version: "2.9"
   galaxy_tags: [haproxy]
