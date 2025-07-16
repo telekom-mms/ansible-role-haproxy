@@ -158,8 +158,8 @@ haproxy_custom_config: |
 haproxy_frontends:
   - name: example-frontend
     binds:
-      address: 127.0.0.1
-      port: 80
+      - address: 127.0.0.1
+        port: 80
     mode: http
     default_backend: example-backend
     client_timeout: 30s
