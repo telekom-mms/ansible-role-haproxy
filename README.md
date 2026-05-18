@@ -115,7 +115,17 @@ This role installs and configures HAProxy on hosts and also allows changing the 
 
 ## Dependencies
 
-None.
+```yaml
+collections:
+  - name: community.general
+    version: ">=4.1.0"
+  - name: ansible.posix
+    version: ">=1.0.0"
+```
+
+```bash
+ansible-galaxy install -r requirements.yml
+```
 
 ## Example Playbook
 

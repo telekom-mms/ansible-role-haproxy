@@ -7,7 +7,6 @@
   when: not haproxy_distribution_lb_change
   ansible.builtin.include_tasks: config.yml
 
-
 - name: Change distribution of HAProxy Backends
   when: haproxy_distribution_lb_change
   ansible.builtin.include_tasks: distribution.yml
