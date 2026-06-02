@@ -5,25 +5,28 @@
 This role installs and configures HAProxy on hosts and also allows changing the distribution of backend servers of HAProxy backends.
 
 ## Supported Operating Systems
-- EL
+
+- Ubuntu
   - all
 - Debian
+  - all
+- EL
   - all
 
 ## Role Variables
 
 - `haproxy_backend_vars`
-  - Default: ``
+  - Default: `[]`
   - Description: List of backend variables
-  - Type: list
+  - Type: list of ''
   - Required: no
 - `haproxy_backends`
-  - Default: ``
+  - Default: `[]`
   - Description: List of backends
   - Type: list of 'dict'
   - Required: no
 - `haproxy_configuration_no_log`
-  - Default: `true`
+  - Default: `True`
   - Description: Do not show rendered template output on creation
   - Type: bool
   - Required: no
@@ -58,9 +61,9 @@ This role installs and configures HAProxy on hosts and also allows changing the 
   - Type: str
   - Required: no
 - `haproxy_default_vars`
-  - Default: ``
+  - Default: `[]`
   - Description: List of variables for default configuration part of HAProxy
-  - Type: list
+  - Type: list of ''
   - Required: no
 - `haproxy_distribution_lb_backend_drain_wait`
   - Default: `60`
@@ -68,17 +71,17 @@ This role installs and configures HAProxy on hosts and also allows changing the 
   - Type: int
   - Required: no
 - `haproxy_distribution_lb_change`
-  - Default: `false`
+  - Default: `False`
   - Description: Adjust distribution of HAProxy backend servers.
   - Type: bool
   - Required: no
 - `haproxy_frontend_vars`
-  - Default: ``
+  - Default: `[]`
   - Description: List of frontend variables
-  - Type: list
+  - Type: list of ''
   - Required: no
 - `haproxy_frontends`
-  - Default: ``
+  - Default: `[]`
   - Description: List of frontends
   - Type: list of 'dict'
   - Required: no
@@ -99,48 +102,35 @@ This role installs and configures HAProxy on hosts and also allows changing the 
   - Required: no
 - `haproxy_global_user`
   - Default: `haproxy`
-  - Description: HaProxy User
+  - Description: HAProxy User
   - Type: str
   - Required: no
 - `haproxy_global_vars`
-  - Default: ``
+  - Default: `[]`
   - Description: List of variables for global configuration part of HAProxy
-  - Type: list
+  - Type: list of ''
   - Required: no
 - `haproxy_user_list`
-  - Default: ``
+  - Default: `[]`
   - Description: List of userlists
-  - Type: list
+  - Type: list of ''
   - Required: no
 
 ## Dependencies
 
-```yaml
-collections:
-  - name: community.general
-    version: ">=4.1.0"
-  - name: ansible.posix
-    version: ">=1.0.0"
-```
-
-```bash
-ansible-galaxy install -r requirements.yml
-```
+None.
 
 ## Example Playbook
 
 ```
 - hosts: all
   roles:
-    - name: ansible-role-haproxy
+    - telekom_mms.haproxy
 ```
-
-
-<!-- END_ANSIBLE_DOCS -->
 
 ## Usage
 
-```yaml
+```
 ---
 haproxy_global_vars:
   - "maxconn 4000"
@@ -216,16 +206,17 @@ haproxy_backends:
       - "timeout server 1m"
     comments:
       - "# backend for service xy"
-haproxy_maintenance_pages_file_path: "{{ playbook_dir }}/../files/haproxy"
+haproxy_maintenance_pages_file_path: "/../files/haproxy"
 ```
 
+## Author Information
+
+- Andreas Hering
+- Daniel Uhlmann
+- Christopher Grau
 
 ## License
 
 GPLv3
 
-## Author Information
-
-* Andreas Hering
-* Daniel Uhlmann
-* Christopher Grau
+<!-- END_ANSIBLE_DOCS -->

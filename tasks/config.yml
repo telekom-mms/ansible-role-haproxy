@@ -2,7 +2,7 @@
 
 - name: Fetch OS dependent variables
   ansible.builtin.include_vars:
-    file: "{{ ansible_facts.os_family }}.yml"
+    file: "{{ ansible_facts['os_family'] }}.yml"
 
 - name: Create folder for HAProxy error pages
   when:
@@ -42,6 +42,8 @@
   notify: Reload haproxy
 
 - name: HAProxy logging - rsyslog - uncomment ModLoad to load UDP Module
+  when:
+    - ansible_facts['packages']['rsyslog'] is defined
   ansible.builtin.replace:
     path: /etc/rsyslog.conf
     regexp: "{{ haproxy_rsyslog_module_regex }}"
@@ -49,6 +51,8 @@
   notify: Validate rsyslog config
 
 - name: HAProxy logging - rsyslog - uncomment UDPServerRun to listen on all IPs for UDP traffic on port 514
+  when:
+    - ansible_facts['packages']['rsyslog'] is defined
   ansible.builtin.replace:
     path: /etc/rsyslog.conf
     regexp: "{{ haproxy_rsyslog_udp_server_regex }}"
@@ -56,6 +60,8 @@
   notify: Validate rsyslog config
 
 - name: HAProxy logging - rsyslog - copy HAProxy config
+  when:
+    - ansible_facts['packages']['rsyslog'] is defined
   ansible.builtin.template:
     src: rsyslog_haproxy.conf.j2
     dest: "{{ haproxy_rsyslog_configuration_file }}"
@@ -70,6 +76,8 @@
     state: started
 
 - name: Start and enable rsyslog
+  when:
+    - ansible_facts['packages']['rsyslog'] is defined
   ansible.builtin.service:
     name: rsyslog
     enabled: true

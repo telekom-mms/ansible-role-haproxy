@@ -1,0 +1,51 @@
+---
+- name: Verify
+  hosts: all
+  become: true
+  tasks:
+    - name: Check haproxy service is running
+      ansible.builtin.systemd:
+        name: haproxy
+      register: haproxy_service
+      failed_when: haproxy_service.status.ActiveState != "active"
+
+    - name: Check /var/lib/haproxy/stats exists
+      ansible.builtin.stat:
+        path: /var/lib/haproxy/stats
+      register: haproxy_stats_dir
+
+    - name: Assert /var/lib/haproxy/stats exists
+      ansible.builtin.assert:
+        that:
+          - haproxy_stats_dir.stat.exists
+        fail_msg: "/var/lib/haproxy/stats does not exist"
+
+    - name: Read haproxy.cfg
+      ansible.builtin.slurp:
+        src: /etc/haproxy/haproxy.cfg
+      register: haproxy_cfg
+
+    - name: Check haproxy.cfg contains myUserList
+      ansible.builtin.assert:
+        that:
+          - "'myUserList' in (haproxy_cfg.content | b64decode)"
+        fail_msg: "haproxy.cfg does not contain myUserList"
+
+    - name: Check haproxy.cfg contains frontend example-frontend
+      ansible.builtin.assert:
+        that:
+          - "'frontend example-frontend' in (haproxy_cfg.content | b64decode)"
+        fail_msg: "haproxy.cfg does not contain frontend example-frontend"
+
+    - name: Check haproxy.cfg contains stats enable
+      ansible.builtin.assert:
+        that:
+          - "'stats enable' in (haproxy_cfg.content | b64decode)"
+        fail_msg: "haproxy.cfg does not contain stats enable in backend"
+
+    - name: Curl to 127.0.0.1:80/index.html and check for Hello World
+      ansible.builtin.uri:
+        url: "http://127.0.0.1:80/index.html"
+        return_content: true
+      register: curl_result
+      failed_when: "'Hello World' not in curl_result.content"

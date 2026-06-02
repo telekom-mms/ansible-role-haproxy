@@ -1,11 +1,23 @@
 ---
+dependencies: []
+
 galaxy_info:
-  role_name: haproxy
-  author: telekom_mms
+  author: "Andreas Hering, Daniel Uhlmann, Christopher Grau"
   description: This role installs and configures HAProxy on hosts and also allows changing the distribution of backend servers of HAProxy backends.
+  company: Deutsche Telekom MMS GmbH
   license: GPLv3
   min_ansible_version: "2.9"
-  galaxy_tags: [haproxy]
+  role_name: haproxy
+  namespace: telekom_mms
   platforms:
-    - { name: EL, versions: [all] }
-    - { name: Debian, versions: [all] }
+    - name: Ubuntu
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
+    - name: EL
+      versions:
+        - all
+  galaxy_tags:
+    - haproxy
