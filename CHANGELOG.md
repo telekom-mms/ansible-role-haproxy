@@ -14,6 +14,7 @@
 
 **Merged pull requests:**
 
+- Pin dependencies [\#21](https://github.com/telekom-mms/ansible-role-haproxy/pull/21) ([renovate[bot]](https://github.com/apps/renovate))
 - Pin dependencies [\#20](https://github.com/telekom-mms/ansible-role-haproxy/pull/20) ([renovate[bot]](https://github.com/apps/renovate))
 
 ## [1.0.2](https://github.com/telekom-mms/ansible-role-haproxy/tree/1.0.2) (2026-05-18)
