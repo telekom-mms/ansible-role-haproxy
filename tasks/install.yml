@@ -6,11 +6,10 @@
     state: present
 
 - name: Set selinux bool for haproxy
+  when:
+    - ansible_facts["selinux"] is defined
+    - ansible_facts["selinux"]["status"] == 'enabled'
   ansible.posix.seboolean:
     name: haproxy_connect_any
     state: true
     persistent: true
-  when:
-    - ansible_selinux
-    - ansible_selinux is defined
-    - ansible_selinux.status == 'enabled'

@@ -1,0 +1,26 @@
+---
+- name: Prepare
+  hosts: all
+  tasks:
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+
+    - name: Install python3 and curl
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - python3
+        - curl
+
+    - name: Create simple index.html
+      ansible.builtin.copy:
+        dest: /tmp/index.html
+        content: "Hello World"
+        mode: "0644"
+
+    - name: Start simple http server
+      ansible.builtin.shell:
+        cmd: "nohup python3 -m http.server 8080 --bind 127.0.0.1 --directory /tmp </dev/null >/dev/null 2>&1 &"
+      changed_when: true

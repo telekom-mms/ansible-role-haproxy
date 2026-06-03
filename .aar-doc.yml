@@ -1,13 +1,12 @@
 output_template: |
   <!-- BEGIN_ANSIBLE_DOCS -->
 
-  # Ansible role {{ metadata.galaxy_info.author }}.{{ metadata.galaxy_info.role_name }}
+  # Ansible role {{ metadata.galaxy_info.namespace }}.{{ metadata.galaxy_info.role_name }}
 
   {{ metadata.galaxy_info.description }}
 
   ## Supported Operating Systems
-
-  {%- for platform in metadata.galaxy_info.platforms %}
+  {% for platform in metadata.galaxy_info.platforms %}
   - {{ platform.name }}
     {%- if "versions" in platform %}
     - {{ platform.versions | default([]) | join(', ') }}
@@ -42,8 +41,97 @@ output_template: |
   ```
   - hosts: all
     roles:
-      - name: {{ role }}
+      - {{ metadata.galaxy_info.namespace }}.{{ metadata.galaxy_info.role_name }}
   ```
 
+  ## Usage
+
+  ```
+  ---
+  haproxy_global_vars:
+    - "maxconn 4000"
+  haproxy_default_vars:
+    - "maxconn 8000"
+    - "option redispatch"
+    - "retries 3"
+
+  haproxy_user_list:
+    - name: myUserList
+      users:
+        - name: myUser
+          pwhash: $5$EWyTNL7RGdz56jUe$uG6dMC02hfCYsuoTbuzFhoc/.Ly4/LxVQaLH3NRdfI6
+
+  haproxy_custom_config: |
+    listen stats
+      bind 0.0.0.0:82
+      mode http
+      stats enable
+      stats uri /
+      stats admin if TRUE
+      stats realm HAProxy
+      stats auth admin:xxxx
+
+  haproxy_frontends:
+    - name: example-frontend
+      binds:
+        - address: 127.0.0.1
+          port: 80
+      mode: http
+      default_backend: example-backend
+      client_timeout: 30s
+      options:
+        - httplog
+      aclist:
+        - name: ip_whitelist
+          match: src
+          vars:
+            - 172.29.0.7
+            - 172.29.0.5
+        - name: "exampleacl"
+          match: "req.hdr(Host) -i -m reg"
+          vars:
+            - "example.com"
+          use_backend:
+            - name: "example_com_backend"
+              check_acl: "exampleacl"
+      vars:
+        - "# force redirect from http to https"
+        - "redirect scheme https if !{ ssl_fc }"
+        - "http-request deny if !ip_whitelist"
+        - "use_backend another-example-backend if acl_example"
+      comments:
+        - "# frontend for service xy"
+
+  haproxy_backends:
+    - name: example-backend
+      mode: http
+      servers:
+        - name: "server1"
+          address: "172.29.0.1"
+          port: 80
+        - name: "server2"
+          address: "172.29.0.2"
+          port: 80
+          options: "backup"
+      options:
+        - httplog
+        - httpchk
+      vars:
+        - "http-request del-header X-REWRITE"
+        - "timeout connect 10s"
+        - "timeout server 1m"
+      comments:
+        - "# backend for service xy"
+  haproxy_maintenance_pages_file_path: "{{ playbook_dir }}/../files/haproxy"
+  ```
+
+  ## Author Information
+  {% for author in metadata.galaxy_info.author.split(', ') %}
+  - {{ author }}
+  {%- endfor %}
+
+  ## License
+
+  {{ metadata.galaxy_info.license }}
 
   <!-- END_ANSIBLE_DOCS -->

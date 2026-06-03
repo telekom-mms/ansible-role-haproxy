@@ -1,0 +1,17 @@
+---
+name: New release
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+      - main
+
+jobs:
+  release:
+    # docs: https://github.com/telekom-mms/.github#release
+    if: github.repository != '$TEMPLATE_REPOSITORY'
+    uses: telekom-mms/.github/.github/workflows/release.yml@main
+    secrets:
+      GH_BRANCH_PROTECTION_APP_TOKEN: ${{ secrets.GH_BRANCH_PROTECTION_APP_TOKEN }}

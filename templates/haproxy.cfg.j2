@@ -4,7 +4,7 @@ global
   user {{ haproxy_global_user }}
   group {{ haproxy_global_group }}
   daemon
-  log {{ ansible_default_ipv4.address }} local0
+  log {{ ansible_facts["default_ipv4"]["address"] }} local0
 {% if haproxy_global_stats_socket_level is defined %}
   stats socket {{ haproxy_global_stats_socket }} level {{ haproxy_global_stats_socket_level }}
 {% else %}

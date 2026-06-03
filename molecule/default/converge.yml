@@ -1,0 +1,51 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  vars:
+    haproxy_global_stats_socket_level: admin
+    haproxy_global_vars:
+      - "maxconn 4000"
+    haproxy_default_vars:
+      - "maxconn 8000"
+      - "option redispatch"
+      - "retries 3"
+    haproxy_user_list:
+      - name: myUserList
+        users:
+          - name: myUser
+            pwhash: $5$EWyTNL7RGdz56jUe$uG6dMC02hfCYsuoTbuzFhoc/.Ly4/LxVQaLH3NRdfI6
+    haproxy_frontends:
+      - name: example-frontend
+        binds:
+          - address: 127.0.0.1
+            port: 80
+        mode: http
+        default_backend: example-backend
+        client_timeout: 30s
+        options:
+          - httplog
+        comments:
+          - "# frontend for service example-backend"
+    haproxy_backends:
+      - name: example-backend
+        mode: http
+        servers:
+          - name: "server1"
+            address: "127.0.0.1"
+            port: 8080
+        options:
+          - httplog
+          - httpchk
+        vars:
+          - "timeout connect 10s"
+          - "timeout server 1m"
+          - '# stats for haproxy (need to be here or it will prompt before redirected to https, also access via IP would be possible via http)'
+          - 'stats enable'
+          - 'stats uri /stats'
+          - 'stats realm Haproxy\ Statistics'
+          - 'stats auth admin:r3ad0nly'
+        comments:
+          - "# backend for service example"
+  roles:
+    - telekom_mms.haproxy
