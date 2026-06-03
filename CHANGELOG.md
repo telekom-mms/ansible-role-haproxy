@@ -1,8 +1,12 @@
 # Changelog
 
-## [1.0.3](https://github.com/telekom-mms/ansible-role-haproxy/tree/1.0.3) (2026-06-03)
+## [1.1.0](https://github.com/telekom-mms/ansible-role-haproxy/tree/1.1.0) (2026-06-03)
 
-[Full Changelog](https://github.com/telekom-mms/ansible-role-haproxy/compare/1.0.2...1.0.3)
+[Full Changelog](https://github.com/telekom-mms/ansible-role-haproxy/compare/1.0.2...1.1.0)
+
+**Implemented enhancements:**
+
+- feature: added molecule tests [\#19](https://github.com/telekom-mms/ansible-role-haproxy/pull/19) ([beechesII](https://github.com/beechesII))
 
 **Fixed bugs:**
 
@@ -11,7 +15,6 @@
 **Merged pull requests:**
 
 - Pin dependencies [\#20](https://github.com/telekom-mms/ansible-role-haproxy/pull/20) ([renovate[bot]](https://github.com/apps/renovate))
-- feature: added molecule tests [\#19](https://github.com/telekom-mms/ansible-role-haproxy/pull/19) ([beechesII](https://github.com/beechesII))
 
 ## [1.0.2](https://github.com/telekom-mms/ansible-role-haproxy/tree/1.0.2) (2026-05-18)
 
