@@ -1,11 +1,12 @@
 # Changelog
 
-## [1.1.1](https://github.com/telekom-mms/ansible-role-haproxy/tree/1.1.1) (2026-06-04)
+## [1.1.1](https://github.com/telekom-mms/ansible-role-haproxy/tree/1.1.1) (2026-06-25)
 
 [Full Changelog](https://github.com/telekom-mms/ansible-role-haproxy/compare/1.1.0...1.1.1)
 
 **Merged pull requests:**
 
+- Update actions/setup-python digest to ece7cb0 [\#24](https://github.com/telekom-mms/ansible-role-haproxy/pull/24) ([renovate[bot]](https://github.com/apps/renovate))
 - Update actions/checkout digest to df4cb1c [\#22](https://github.com/telekom-mms/ansible-role-haproxy/pull/22) ([renovate[bot]](https://github.com/apps/renovate))
 
 ## [1.1.0](https://github.com/telekom-mms/ansible-role-haproxy/tree/1.1.0) (2026-06-03)
