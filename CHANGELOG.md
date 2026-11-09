@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.2](https://github.com/telekom-mms/ansible-role-haproxy/tree/1.1.2) (2026-11-09)
+
+[Full Changelog](https://github.com/telekom-mms/ansible-role-haproxy/compare/1.1.1...1.1.2)
+
+**Merged pull requests:**
+
+- Remove debian11 molecule tests [\#30](https://github.com/telekom-mms/ansible-role-haproxy/pull/30) ([beechesII](https://github.com/beechesII))
+
 ## [1.1.1](https://github.com/telekom-mms/ansible-role-haproxy/tree/1.1.1) (2026-08-19)
 
 [Full Changelog](https://github.com/telekom-mms/ansible-role-haproxy/compare/1.1.0...1.1.1)
