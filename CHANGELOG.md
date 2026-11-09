@@ -7,6 +7,7 @@
 **Merged pull requests:**
 
 - Remove debian11 molecule tests [\#30](https://github.com/telekom-mms/ansible-role-haproxy/pull/30) ([beechesII](https://github.com/beechesII))
+- Update actions/setup-python digest to 6d4fd22 [\#29](https://github.com/telekom-mms/ansible-role-haproxy/pull/29) ([renovate[bot]](https://github.com/apps/renovate))
 
 ## [1.1.1](https://github.com/telekom-mms/ansible-role-haproxy/tree/1.1.1) (2026-08-19)
 
